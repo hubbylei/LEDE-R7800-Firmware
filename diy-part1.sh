@@ -16,6 +16,7 @@
 # Add a feed source
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+git clone https://github.com/pymumu/openwrt-smartdns package/custom/smartdns
 git clone https://github.com/pymumu/luci-app-smartdns -b lede package/custom/luci-app-smartdns
 git clone https://github.com/hubbylei/luci-app-passwall package/custom/luci-app-passwall
 git clone https://github.com/xiaorouji/openwrt-passwall package/custom/openwrt-passwall
