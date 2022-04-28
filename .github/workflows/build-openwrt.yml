@@ -12,8 +12,8 @@ name: Build OpenWrt
 
 on:
   repository_dispatch:
+    types: [Source Code Update]
   workflow_dispatch:
-    type: Source Code Update
     inputs:
       ssh:
         description: 'SSH connection to Actions'
