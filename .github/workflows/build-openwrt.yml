@@ -26,7 +26,7 @@ env:
   CONFIG_FILE: r7800.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: false
+  UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
@@ -114,11 +114,22 @@ jobs:
       run: df -hT
 
     - name: Upload bin directory
-      uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/bin
+      run: |
+        cd openwrt
+        bdate=$(date "+%Y%m%d%H%M")
+        lftp <<EOF
+        set ftp:ssl-allow no
+        open ftp://${{secrets.LFTP_USER}}:${{secrets.LFTP_PASS}}@${{secrets.LFTP_HOST}}
+        rm -r -f /Files/lede/packages
+        rm -r -f /Files/lede/targets
+        mirror -R bin/packages /Files/lede/
+        mirror -R bin/targets /Files/lede/
+        mirror -R bin/packages /Files/lede-rom/$bdate/
+        mirror -R bin/targets /Files/lede-rom/$bdate/
+        close
+        bye
+        EOF
 
     - name: Zip bin directory
       run: cd openwrt/bin && zip -r ${GITHUB_WORKSPACE}/openwrt/OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip *
