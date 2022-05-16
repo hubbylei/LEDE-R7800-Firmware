@@ -112,23 +112,9 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: Upload bin directory
+    - name: Upgrade Packages
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      run: |
-        cd openwrt
-        bdate=$(date "+%Y%m%d%H%M")
-        lftp <<EOF
-        set ftp:ssl-allow no
-        open ftp://${{secrets.LFTP_USER}}:${{secrets.LFTP_PASS}}@${{secrets.LFTP_HOST}}
-        rm -r -f /Files/lede/packages
-        rm -r -f /Files/lede/targets
-        mirror -R bin/packages /Files/lede/
-        mirror -R bin/targets /Files/lede/
-        mirror -R bin/packages /Files/lede-rom/$bdate/
-        mirror -R bin/targets /Files/lede-rom/$bdate/
-        close
-        bye
-        EOF
+      run: curl -sL http://hubbylei.dynu.net:81/lede
 
     - name: Zip bin directory
       if: steps.compile.outputs.status == 'success' && !cancelled()
