@@ -151,10 +151,6 @@ jobs:
             ${{ env.FIRMWARE }}/*
             openwrt/OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip
 
-    - name: Upgrade Packages
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      run: curl -sL http://hubbylei.dynu.net:81/lede
-
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
