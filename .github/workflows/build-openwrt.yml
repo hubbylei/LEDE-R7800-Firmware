@@ -148,8 +148,7 @@ jobs:
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body: ${{ steps.tag.outputs.release_tag }}
-        files: |
-            ${{ env.FIRMWARE }}/*
+        files: ${{ env.FIRMWARE }}/*
 
     - name: Upload To File Host
       uses: cpina/github-action-push-to-another-repository@main
