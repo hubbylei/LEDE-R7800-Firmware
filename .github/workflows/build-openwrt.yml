@@ -122,6 +122,7 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
+        mv ${GITHUB_WORKSPACE}/openwrt/OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip ./
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
@@ -149,7 +150,20 @@ jobs:
         body: ${{ steps.tag.outputs.release_tag }}
         files: |
             ${{ env.FIRMWARE }}/*
-            openwrt/OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip
+
+    - name: Upload To File Host
+      uses: cpina/github-action-push-to-another-repository@main
+      if: steps.tag.outputs.status == 'success'
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        source-directory: '${{ env.FIRMWARE }}'
+        destination-github-username: 'hubbylei'
+        destination-repository-name: 'LEDE-R7800-Firmware'
+        target-directory: 'Firmware'
+        user-email: 'hubbylei@hubbylei.dynu.net'
+        commit-message: ${{ steps.tag.outputs.release_tag }}
+        target-branch: main
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
