@@ -137,20 +137,11 @@ jobs:
       id: tag
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
+        ls ${{ env.FIRMWARE }}
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M%S")"
         echo "::set-output name=status::success"
 
-    - name: Upload firmware to release
-      uses: softprops/action-gh-release@v1
-      if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        body: ${{ steps.tag.outputs.release_tag }}
-        files: ${{ env.FIRMWARE }}/*
-
-    - name: Upload To File Host
+    - name: Upload File To Repo
       uses: cpina/github-action-push-to-another-repository@main
       if: steps.tag.outputs.status == 'success'
       env:
@@ -163,6 +154,16 @@ jobs:
         user-email: 'hubbylei@hubbylei.dynu.net'
         commit-message: ${{ steps.tag.outputs.release_tag }}
         target-branch: main
+
+    - name: Upload firmware to release
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body: ${{ steps.tag.outputs.release_tag }}
+        files: ${{ env.FIRMWARE }}/*
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
