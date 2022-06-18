@@ -149,8 +149,7 @@ jobs:
       # with:
         # source-directory: '${{ env.FIRMWARE }}'
         # destination-github-username: 'hubbylei'
-        # destination-repository-name: 'LEDE-R7800-Firmware'
-        # target-directory: 'Firmware'
+        # destination-repository-name: 'LEDE-R7800-Firmware-Files'
         # user-email: 'hubbylei@hubbylei.dynu.net'
         # commit-message: ${{ steps.tag.outputs.release_tag }}
         # target-branch: main
