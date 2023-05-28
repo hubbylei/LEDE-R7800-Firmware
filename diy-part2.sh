@@ -12,10 +12,12 @@
 
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+rm -rf feeds/packages/net/smartdns
+rm -rf package/libs/openssl
 
 sed -i 's/OpenWrt/LEDE/g' package/lean/default-settings/files/zzz-default-settings
 sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settings
-sed -i 's/1000000/600000/g' target/linux/ipq806x/base-files/etc/init.d/cpu_freq
+# sed -i 's/1000000/600000/g' target/linux/ipq806x/base-files/etc/init.d/cpu_freq
 sed -i '/+iptables-mod-physdev/d' package/qca/nss/qca-nss-ecm/Makefile
 sed -i 's/+kmod-ipsec/+kmod-ipsec +iptables-mod-physdev/g' package/qca/nss/qca-nss-ecm/Makefile
 sed -i 's/ By Lienol/ (default)/g' package/custom/luci-theme-bootstrap-mod/Makefile

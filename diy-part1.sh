@@ -23,4 +23,3 @@ git clone https://github.com/xiaorouji/openwrt-passwall -b packages package/cust
 git clone https://github.com/tty228/luci-app-serverchan package/custom/luci-app-serverchan
 git clone https://github.com/leshanydy2022/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
 git clone https://github.com/hubbylei/openssl package/custom/openssl
-rm -rf package/libs/openssl
