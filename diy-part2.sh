@@ -20,7 +20,7 @@ sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settin
 # sed -i 's/1000000/600000/g' target/linux/ipq806x/base-files/etc/init.d/cpu_freq
 sed -i '/+iptables-mod-physdev/d' package/qca/nss/qca-nss-ecm/Makefile
 sed -i 's/+kmod-ipsec/+kmod-ipsec +iptables-mod-physdev/g' package/qca/nss/qca-nss-ecm/Makefile
-sed -i 's/ By Lienol/ (default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
+sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
 sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' package/feeds/packages/openssh/Makefile
 sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' package/feeds/luci/luci/Makefile
 sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' package/feeds/luci/luci-nginx/Makefile
