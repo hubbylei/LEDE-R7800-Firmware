@@ -21,11 +21,11 @@ sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settin
 sed -i '/+iptables-mod-physdev/d' package/qca/nss/qca-nss-ecm/Makefile
 sed -i 's/+kmod-ipsec/+kmod-ipsec +iptables-mod-physdev/g' package/qca/nss/qca-nss-ecm/Makefile
 sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
-sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' package/feeds/packages/openssh/Makefile
-sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' package/feeds/luci/luci/Makefile
-sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' package/feeds/luci/luci-nginx/Makefile
-sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' package/feeds/luci/luci-ssl-nginx/Makefile
-sed -i 's/;Listen = 0.0.0.0:1688/Listen = 0.0.0.0:1688/g' package/feeds/packages/vlmcsd/files/vlmcsd.ini
+sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' feeds/packages/net/openssh/Makefile
+sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci/Makefile
+sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci-nginx/Makefile
+sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci-ssl-nginx/Makefile
+sed -i 's/;Listen = 0.0.0.0:1688/Listen = 0.0.0.0:1688/g' feeds/packages/net/vlmcsd/files/vlmcsd.ini
 
 GEOIP_VER=$(echo -n `curl -sL https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq .tag_name | sed 's/\"//g'`)
 GEOIP_HASH=$(echo -n `curl -sL https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$GEOIP_VER/geoip.dat.sha256sum | awk '{print $1}'`)
