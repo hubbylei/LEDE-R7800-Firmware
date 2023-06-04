@@ -12,8 +12,23 @@
 
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
-rm -rf feeds/packages/net/smartdns
-rm -rf package/libs/openssl
+
+del_data="
+./feeds/luci/themes/luci-theme-bootstrap
+./feeds/packages/net/dns2socks
+./feeds/packages/net/ipt2socks
+./feeds/packages/net/microsocks
+./feeds/packages/net/pdnsd-alt
+./feeds/packages/net/smartdns
+./feeds/packages/net/v2ray-geodata
+./package/libs/openssl
+"
+
+for cmd in $del_data;
+do
+	rm -rf $cmd
+	echo "Deleted $cmd"
+done
 
 sed -i 's/OpenWrt/LEDE/g' package/lean/default-settings/files/zzz-default-settings
 sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settings
