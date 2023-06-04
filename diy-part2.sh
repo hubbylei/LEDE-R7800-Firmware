@@ -14,6 +14,7 @@
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
 del_data="
+./feeds/luci/applications/luci-app-serverchan
 ./feeds/luci/themes/luci-theme-bootstrap
 ./feeds/packages/net/dns2socks
 ./feeds/packages/net/ipt2socks
