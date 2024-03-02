@@ -22,6 +22,7 @@ del_data="
 ./feeds/packages/net/pdnsd-alt
 ./feeds/packages/net/smartdns
 ./feeds/packages/net/v2ray-geodata
+./feeds/packages/lang/golang
 ./package/libs/openssl
 "
 
@@ -31,6 +32,7 @@ do
 	echo "Deleted $cmd"
 done
 
+git clone https://github.com/hubbylei/golang ./feeds/packages/lang/golang
 sed -i 's/OpenWrt/LEDE/g' package/lean/default-settings/files/zzz-default-settings
 sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settings
 # sed -i 's/1000000/600000/g' target/linux/ipq806x/base-files/etc/init.d/cpu_freq
