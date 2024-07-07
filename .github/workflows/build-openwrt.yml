@@ -152,7 +152,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         ls ${{ env.FIRMWARE }}
-        echo "release_tag=$(date +"%Y.%m.%d-%H%M%S")" >> $GITHUB_ENV
+        echo "release_tag=$(date +"%Y.%m.%d-%H%M%S")" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
 
     # - name: Upload File To Repo
