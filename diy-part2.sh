@@ -22,8 +22,6 @@ del_data="
 ./feeds/packages/net/pdnsd-alt
 ./feeds/packages/net/smartdns
 ./feeds/packages/net/v2ray-geodata
-./feeds/packages/lang/golang
-./package/libs/openssl
 ./target/linux/generic/pending-5.4/680-NET-skip-GRO-for-foreign-MAC-addresses.patch
 "
 
@@ -33,12 +31,11 @@ do
 	echo "Deleted $cmd"
 done
 
-git clone https://github.com/hubbylei/golang ./feeds/packages/lang/golang
+LINUX_VERSION=$(grep "LINUX_VERSION" package/custom/lede/include/kernel-5.4 | awk -F "=" '{print $2}' | sed 's/ //g')
+LINUX_KERNEL_HASH=$(grep "LINUX_KERNEL" package/custom/lede/include/kernel-5.4 | awk -F "=" '{print $2}' | sed 's/ //g')
+echo -e "LINUX_VERSION-5.4 = ${LINUX_VERSION}\nLINUX_KERNEL_HASH-5.4${LINUX_VERSION} = ${LINUX_KERNEL_HASH}" > include/kernel-5.4
 sed -i 's/OpenWrt/LEDE/g' package/lean/default-settings/files/zzz-default-settings
 sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settings
-# sed -i 's/1000000/600000/g' target/linux/ipq806x/base-files/etc/init.d/cpu_freq
-# sed -i '/+iptables-mod-physdev/d' package/qca/nss/qca-nss-ecm/Makefile
-sed -i 's/+kmod-ipsec/+kmod-ipsec +iptables-mod-physdev/g' package/qca/nss/qca-nss-ecm/Makefile
 sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
 sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' feeds/packages/net/openssh/Makefile
 sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci/Makefile

@@ -20,6 +20,6 @@ git clone https://github.com/pymumu/openwrt-smartdns package/custom/smartdns
 git clone https://github.com/pymumu/luci-app-smartdns -b lede package/custom/luci-app-smartdns
 git clone https://github.com/xiaorouji/openwrt-passwall -b main package/custom/luci-app-passwall
 git clone https://github.com/xiaorouji/openwrt-passwall-packages -b main package/custom/openwrt-passwall
-git clone https://github.com/tty228/luci-app-wechatpush package/custom/luci-app-wechatpush
+git clone https://github.com/tty228/luci-app-wechatpush -b openwrt-18.06 package/custom/luci-app-serverchan
 git clone https://github.com/leshanydy2022/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
-git clone https://github.com/hubbylei/openssl package/custom/openssl
+git clone https://github.com/coolsnowwolf/lede package/custom/lede
