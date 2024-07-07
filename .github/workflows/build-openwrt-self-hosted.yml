@@ -53,7 +53,7 @@ jobs:
     - name: Clone source code
       run: |
         df -hT $PWD
-        git clone --single-branch https://ghproxy.net/$REPO_URL -b $REPO_BRANCH openwrt
+        git clone --single-branch https://mirror.ghproxy.com/$REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
         git reset --hard $REPO_HASH
 
