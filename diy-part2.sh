@@ -24,6 +24,7 @@ del_data="
 ./feeds/packages/net/v2ray-geodata
 ./feeds/packages/lang/golang
 ./package/libs/openssl
+./target/linux/generic/pending-5.4/680-NET-skip-GRO-for-foreign-MAC-addresses.patch
 "
 
 for cmd in $del_data;
