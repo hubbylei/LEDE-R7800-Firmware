@@ -130,7 +130,7 @@ jobs:
         rm -rf packages
         mv ${GITHUB_WORKSPACE}/openwrt/OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip ./
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+        echo "status=success" >> $GITHUB_ENV
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
@@ -144,8 +144,8 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         ls ${{ env.FIRMWARE }}
-        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M%S")"
-        echo "::set-output name=status::success"
+        echo "release_tag=$(date +"%Y.%m.%d-%H%M%S")" >> $GITHUB_ENV
+        echo "status=success" >> $GITHUB_ENV
 
     # - name: Upload File To Repo
       # uses: cpina/github-action-push-to-another-repository@main
