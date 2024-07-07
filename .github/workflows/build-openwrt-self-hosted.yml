@@ -56,7 +56,7 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone --single-branch https://ghproxy.net/$REPO_URL -b $REPO_BRANCH openwrt
         cd /workdir/openwrt
         git reset --hard $REPO_HASH
         ln -sf /workdir/openwrt ${GITHUB_WORKSPACE}/openwrt
