@@ -161,7 +161,8 @@ jobs:
       run: |
         echo "## :mega:Update content" > release.txt
         echo "![](https://img.shields.io/github/downloads/${{ github.repository }}/${{ steps.tag.outputs.release_tag }}/total?style=flat-square)" >> release.txt
-        echo "Version: ${{ steps.tag.outputs.release_tag }}" >> release.txt
+        echo "### Info" >> release.txt
+        echo "**:minidisc: Version: ${{ steps.tag.outputs.release_tag }}**" >> release.txt
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
