@@ -31,9 +31,9 @@ do
 	echo "Deleted $cmd"
 done
 
-LINUX_VERSION=$(grep "LINUX_VERSION" package/custom/lede/include/kernel-5.4 | awk -F "=" '{print $2}' | sed 's/ //g')
-LINUX_KERNEL_HASH=$(grep "LINUX_KERNEL" package/custom/lede/include/kernel-5.4 | awk -F "=" '{print $2}' | sed 's/ //g')
-echo -e "LINUX_VERSION-5.4 = ${LINUX_VERSION}\nLINUX_KERNEL_HASH-5.4${LINUX_VERSION} = ${LINUX_KERNEL_HASH}" > include/kernel-5.4
+# LINUX_VERSION=$(grep "LINUX_VERSION" package/custom/lede/include/kernel-5.4 | awk -F "=" '{print $2}' | sed 's/ //g')
+# LINUX_KERNEL_HASH=$(grep "LINUX_KERNEL" package/custom/lede/include/kernel-5.4 | awk -F "=" '{print $2}' | sed 's/ //g')
+# echo -e "LINUX_VERSION-5.4 = ${LINUX_VERSION}\nLINUX_KERNEL_HASH-5.4${LINUX_VERSION} = ${LINUX_KERNEL_HASH}" > include/kernel-5.4
 sed -i 's/OpenWrt/LEDE/g' package/lean/default-settings/files/zzz-default-settings
 sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
