@@ -37,15 +37,21 @@ jobs:
       uses: actions/cache@v4
       with:
         path: .commitHash
-        key: HEAD-${{ steps.getHash.outputs.commitHash }}
+        key: Commit-HEAD
 
-    - name: Save New Commit Hash
-      if: steps.cacheHash.outputs.cache-hit != 'true'
+    - name: Check Commit Hash
+      id: check
       run: |
-        echo ${{ steps.getHash.outputs.commitHash }} | tee .commitHash
+        commitHash=$(cat .commitHash)
+        if [ "${{ steps.getHash.outputs.commitHash }}" != "${commitHash}" ];then
+          echo "has_build=true" >> $GITHUB_OUTPUT
+          echo ${{ steps.getHash.outputs.commitHash }} | tee .commitHash
+        else
+          echo "has_build=false" >> $GITHUB_OUTPUT
+        fi
 
     - name: Trigger build
-      if: steps.cacheHash.outputs.cache-hit != 'true'
+      if: steps.check.outputs.has_build == 'true'
       uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
