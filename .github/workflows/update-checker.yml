@@ -39,6 +39,10 @@ jobs:
         path: .commitHash
         key: Commit-HEAD
 
+    - name: Generate Cache
+      if: steps.cacheHash.outputs.cache-hit != 'true'
+      run: touch .commitHash
+
     - name: Check Commit Hash
       id: check
       run: |
