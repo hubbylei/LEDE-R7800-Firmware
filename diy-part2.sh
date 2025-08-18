@@ -41,21 +41,16 @@ sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collecti
 sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci-ssl-nginx/Makefile
 sed -i 's/;Listen = 0.0.0.0:1688/Listen = 0.0.0.0:1688/g' feeds/packages/net/vlmcsd/files/vlmcsd.ini
 
-GEOIP_VER=$(echo -n `curl -sL https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq .tag_name | sed 's/\"//g'`)
-GEOIP_HASH=$(echo -n `curl -sL https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEOIP_VER}/geoip.dat.sha256sum | awk '{print $1}'`)
-GEOSITE_VER=${GEOIP_VER}
-GEOSITE_HASH=$(echo -n `curl -sL https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${GEOSITE_VER}/geosite.dat.sha256sum | awk '{print $1}'`)
+GEOIP_VER=$(echo -n `curl -sL https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq -r .tag_name`)
+GEOIP_HASH=$(echo -n `curl -sL https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$GEOIP_VER/geoip.dat.sha256sum | awk '{print $1}'`)
+GEOSITE_VER=$GEOIP_VER
+GEOSITE_HASH=$(echo -n `curl -sL https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$GEOSITE_VER/geosite.dat.sha256sum | awk '{print $1}'`)
 sed -i '/HASH:=/d' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-
-sed -i 's/GEOIP_VER:=.*/GEOIP_VER:='"${GEOIP_VER}"'/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-sed -i 's/https:\/\/github.com\/v2fly\/geoip/https:\/\/github.com\/Loyalsoldier\/v2ray-rules-dat/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-sed -i '/FILE:=$(GEOIP_FILE)/a\\tHASH:='"${GEOIP_HASH}"'' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-
-sed -i 's/https:\/\/github.com\/v2fly\/domain-list-community/https:\/\/github.com\/Loyalsoldier\/v2ray-rules-dat/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-sed -i 's/GEOSITE_VER:=.*/GEOSITE_VER:='"${GEOSITE_VER}"'/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-sed -i 's/dlc.dat/geosite.dat/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-sed -i '/FILE:=$(GEOSITE_FILE)/a\\tHASH:='"${GEOSITE_HASH}"'' package/custom/openwrt-passwall/v2ray-geodata/Makefile
-
+sed -i 's/Loyalsoldier\/geoip/Loyalsoldier\/v2ray-rules-dat/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
+sed -i 's/GEOIP_VER:=.*/GEOIP_VER:='"$GEOIP_VER"'/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
+sed -i '/FILE:=$(GEOIP_FILE)/a\ HASH:='"$GEOIP_HASH"'' package/custom/openwrt-passwall/v2ray-geodata/Makefile
+sed -i 's/GEOSITE_VER:=.*/GEOSITE_VER:='"$GEOSITE_VER"'/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
+sed -i '/FILE:=$(GEOSITE_FILE)/a\ HASH:='"$GEOSITE_HASH"'' package/custom/openwrt-passwall/v2ray-geodata/Makefile
 sed -i 's/URL:=https:\/\/www.v2fly.org/URL:=https:\/\/github.com\/Loyalsoldier\/v2ray-rules-dat/g' package/custom/openwrt-passwall/v2ray-geodata/Makefile
 
 SMARTDNS_VER=$(echo -n `curl -sL https://api.github.com/repos/pymumu/smartdns/commits | jq .[0].commit.committer.date | awk -F "T" '{print $1}' | sed 's/\"//g' | sed 's/\-/\./g'`)
