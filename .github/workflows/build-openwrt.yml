@@ -41,6 +41,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: Clean-up
+      uses: rokibhasansagar/slimhub_actions@main
+
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
