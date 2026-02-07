@@ -13,9 +13,11 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-rm -rf package/custom/openwrt-passwall/.*
-cp -rf package/custom/openwrt-passwall/* package/custom/
+cp -rf package/custom/openwrt-passwall/luci-app-passwall package/custom/
+rm -rf package/custom/passwall-packages/.git*
+cp -rf package/custom/passwall-packages/* package/custom/
 rm -rf package/custom/openwrt-passwall
+rm -rf package/custom/passwall-packages
 
 del_data=$(ls package/custom)
 for data in ${del_data}
