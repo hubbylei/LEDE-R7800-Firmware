@@ -103,8 +103,6 @@ jobs:
         cp -vf ${GITHUB_WORKSPACE}/$CONFIG_FILE ${GITHUB_WORKSPACE}/openwrt/.config
         make defconfig
         make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
 
     - name: Compile the firmware
       id: compile
