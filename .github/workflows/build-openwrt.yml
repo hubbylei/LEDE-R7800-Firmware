@@ -84,10 +84,8 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        [ -e files ] && mv files ${GITHUB_WORKSPACE}/openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        cp ${GITHUB_WORKSPACE}/$DIY_P2_SH ${GITHUB_WORKSPACE}/openwrt/
         cd ${GITHUB_WORKSPACE}/openwrt
+        cp -f ${GITHUB_WORKSPACE}/$DIY_P2_SH ${GITHUB_WORKSPACE}/openwrt/
         chmod +x $DIY_P2_SH
         ./$DIY_P2_SH
 
@@ -108,6 +106,7 @@ jobs:
       id: package
       run: |
         cd ${GITHUB_WORKSPACE}/openwrt
+        cp -f ${GITHUB_WORKSPACE}/$CONFIG_FILE ${GITHUB_WORKSPACE}/openwrt/.config
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
