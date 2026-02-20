@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build OpenWrt
+name: Build OpenWrt QCA
 
 on:
   repository_dispatch:
@@ -23,8 +23,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  REPO_HASH:
-  #  b23965cfb7fa0f0d743ee2c64afac13091335dc2
+  REPO_HASH: b23965cfb7fa0f0d743ee2c64afac13091335dc2
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: r7800.config
   DIY_P1_SH: diy-part1.sh
@@ -36,7 +35,7 @@ env:
   TZ: Asia/Shanghai
 
 jobs:
-  build:
+  build_QCA:
     runs-on: ubuntu-22.04
 
     steps:
@@ -147,7 +146,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         ls ${{ env.FIRMWARE }}
-        echo "release_tag=$(date +"%Y.%m.%d-%H%M%S")" >> $GITHUB_OUTPUT
+        echo "release_tag=$(date +"%Y.%m.%d-%H%M%S")-QCA" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Generate release info
