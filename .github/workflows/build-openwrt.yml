@@ -55,19 +55,15 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
 
     - name: Clone source code
-      working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone $REPO_URL -b $REPO_BRANCH ${GITHUB_WORKSPACE}/openwrt
         if [ ! -z $REPO_HASH ];then        
-            cd /workdir/openwrt
+            cd ${GITHUB_WORKSPACE}/openwrt
             git reset --hard $REPO_HASH
         fi
-        ln -sf /workdir/openwrt ${GITHUB_WORKSPACE}/openwrt
 
     - name: Load custom feeds
       run: |
