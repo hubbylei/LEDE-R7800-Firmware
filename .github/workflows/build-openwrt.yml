@@ -32,6 +32,7 @@ env:
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
+  AUTH: ${{ secrets.AUTH }}
   TZ: Asia/Shanghai
 
 jobs:
