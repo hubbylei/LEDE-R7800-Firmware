@@ -29,8 +29,8 @@ do
     fi
 done
 
-sed -i 's/OpenWrt/LEDE/g' package/lean/default-settings/files/zzz-default-settings
-sed -i '/--to-ports 53/d' package/lean/default-settings/files/zzz-default-settings
+sed -i 's/DISTRIB_REVISION=.*/DISTRIB_REVISION="R'$(date "+%y.%m.%d")'"/g' package/lean/default-settings/files/zzz-default-settings
+sed -i 's/OPENWRT_RELEASE=.*/OPENWRT_RELEASE="LEDE R'$(date "+%y.%m.%d")'"/g' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
 sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' feeds/packages/net/openssh/Makefile
 sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci/Makefile
