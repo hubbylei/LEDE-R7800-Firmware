@@ -29,7 +29,7 @@ do
     fi
 done
 
-sed -i 's/\.\.\/\.\.\/lang\/rust\/rust-package.mk/$(TOPDIR)\/feeds\/packages\/lang\/rust\/lang\/rust\/rust-package.mk/g' package/custom/smartdns/Makefile
+sed -i 's/\.\.\/\.\.\/lang\/rust\/rust-package.mk/$(TOPDIR)\/feeds\/packages\/lang\/rust\/rust-package.mk/g' package/custom/smartdns/Makefile
 sed -i 's/DISTRIB_REVISION=.*/DISTRIB_REVISION="R'$(date "+%y.%m.%d")'"/g' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/OPENWRT_RELEASE=.*/OPENWRT_RELEASE="LEDE R'$(date "+%y.%m.%d")'"/g' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
