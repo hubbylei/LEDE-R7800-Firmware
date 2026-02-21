@@ -37,19 +37,20 @@ jobs:
       id: cacheHash
       uses: actions/cache@v4
       with:
-        path: ${GITHUB_WORKSPACE}/.commitHash
+        path: commitHash
         key: HEAD-${{ github.sha }}
         restore-keys: HEAD-
 
     - name: Save New Commit Hash
       id: save
       run: |
-        if [ -f ${GITHUB_WORKSPACE}/.commitHash ];then
-          cachehash=$(cat ${GITHUB_WORKSPACE}/.commitHash)
+        if [ -f ${GITHUB_WORKSPACE}/commitHash ];then
+          cachehash=$(cat ${GITHUB_WORKSPACE}/commitHash)
         fi
         if [ "${cachehash}" != "${{ steps.getHash.outputs.commitHash }}" ];then
           echo "build=true" >> "$GITHUB_OUTPUT"
-          echo ${{ steps.getHash.outputs.commitHash }} | tee ${GITHUB_WORKSPACE}/.commitHash
+          echo ${{ steps.getHash.outputs.commitHash }} | tee ${GITHUB_WORKSPACE}/commitHash
+          touch ${GITHUB_WORKSPACE}/commitHash
         else
           echo "build=false" >> "$GITHUB_OUTPUT"
         fi
