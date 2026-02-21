@@ -47,11 +47,11 @@ jobs:
         if [ -f .commitHash ];then
           cachehash=$(cat ./commitHash)
         fi
-        if [ "${cachehash}" == "${{ steps.getHash.outputs.commitHash }}" ];then
-          echo "build=false" >> "$GITHUB_OUTPUT"
-        else
+        if [ "${cachehash}" != "${{ steps.getHash.outputs.commitHash }}" ];then
           echo "build=true" >> "$GITHUB_OUTPUT"
           echo ${{ steps.getHash.outputs.commitHash }} | tee .commitHash
+        else
+          echo "build=false" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Trigger build
