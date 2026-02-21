@@ -29,28 +29,29 @@ jobs:
     - name: Get Commit Hash
       id: getHash
       run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH .
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH lede
+        cd lede
         echo "commitHash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
     - name: Compare Commit Hash
       id: cacheHash
       uses: actions/cache@v4
       with:
-        path: ./commitHash
+        path: .commitHash
         key: HEAD-${{ github.sha }}
         restore-keys: HEAD-
 
     - name: Save New Commit Hash
       id: save
       run: |
-        if [ -f ./commitHash ];then
+        if [ -f .commitHash ];then
           cachehash=$(cat ./commitHash)
         fi
         if [ "${cachehash}" == "${{ steps.getHash.outputs.commitHash }}" ];then
           echo "build=false" >> "$GITHUB_OUTPUT"
         else
           echo "build=true" >> "$GITHUB_OUTPUT"
-          echo ${{ steps.getHash.outputs.commitHash }} | tee ./commitHash
+          echo ${{ steps.getHash.outputs.commitHash }} | tee .commitHash
         fi
 
     - name: Trigger build
