@@ -20,3 +20,5 @@ git clone https://github.com/Openwrt-Passwall/openwrt-passwall -b main package/c
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages -b main package/custom/passwall-packages
 git clone https://github.com/tty228/luci-app-wechatpush -b openwrt-18.06 package/custom/luci-app-serverchan
 git clone https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
