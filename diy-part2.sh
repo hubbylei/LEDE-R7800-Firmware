@@ -18,6 +18,8 @@ rm -rf package/custom/passwall-packages/.git*
 cp -rf package/custom/passwall-packages/* package/custom/
 rm -rf package/custom/openwrt-passwall
 rm -rf package/custom/passwall-packages
+rm -rf openwrt/tools
+cp -rf lede/tools openwrt/tools
 
 del_data=$(ls package/custom)
 for data in ${del_data}
