@@ -22,8 +22,8 @@ rm -rf package/custom/passwall-packages
 del_data=$(ls package/custom)
 for data in ${del_data}
 do
-    isdel=$(find feeds -iname "${data}")
-    if [[ -n ${isdel} && -d ${isdel} ]];then
+    isdel=$(find feeds -name "${data}")
+    if [[ -n ${isdel} && -f ${isdel}/Makefile ]];then
         rm -rf ${isdel}
         echo "Deleted ${isdel}"
     fi
