@@ -22,4 +22,3 @@ git clone https://github.com/tty228/luci-app-wechatpush -b openwrt-18.06 package
 git clone https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
-git clone https://github.com/coolsnowwolf/lede lede
