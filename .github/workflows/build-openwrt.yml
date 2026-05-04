@@ -76,7 +76,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}/openwrt
         cp -vf ${GITHUB_WORKSPACE}/$CONFIG_FILE ${GITHUB_WORKSPACE}/openwrt/.config
         make defconfig
-        make download -j$(($(nproc) * 2))
+        make download -j$(($(nproc) * 2)) V=s
 
     - name: Compile the firmware
       id: compile
