@@ -45,12 +45,12 @@ jobs:
 
     - name: Update feeds
       run: |
+        [ -e $FEEDS_CONF ] && cp -vf $FEEDS_CONF ${GITHUB_WORKSPACE}/openwrt/feeds.conf.default
         cd ${GITHUB_WORKSPACE}/openwrt
         ./scripts/feeds update -a
 
     - name: Load custom feeds
       run: |
-        [ -e $FEEDS_CONF ] && cp -vf $FEEDS_CONF ${GITHUB_WORKSPACE}/openwrt/feeds.conf.default
         cp -vf ${GITHUB_WORKSPACE}/$DIY_P1_SH ${GITHUB_WORKSPACE}/openwrt/
         cd ${GITHUB_WORKSPACE}/openwrt
         chmod +x $DIY_P1_SH
