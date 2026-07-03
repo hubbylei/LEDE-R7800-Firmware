@@ -5,13 +5,17 @@ git clone https://github.com/pymumu/luci-app-smartdns -b master package/custom/l
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall -b main package/custom/openwrt-passwall
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages -b main package/custom/passwall-packages
 git clone https://github.com/tty228/luci-app-wechatpush -b master package/custom/luci-app-wechatpush
+git clone https://github.com/brvphoenix/wrtbwmon -b master package/custom/bwmon
 git clone https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
+git clone https://github.com/hubbylei/libxcrypt -b main package/custom/libxcrypt
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 cp -rf package/custom/openwrt-passwall/luci-app-passwall package/custom/
-cp -rf package/custom/passwall-packages/* package/custom/
 rm -rf package/custom/openwrt-passwall
+cp -rf package/custom/passwall-packages/* package/custom/
 rm -rf package/custom/passwall-packages
+cp -rf package/custom/bwmon/wrtbwmon package/custom/
+rm -rf package/custom/bwmon
 
 del_data=$(ls package/custom)
 for data in ${del_data}
