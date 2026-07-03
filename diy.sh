@@ -1,20 +1,14 @@
 #!/bin/bash
-#
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# File name: diy-part2.sh
-# Description: OpenWrt DIY script part 2 (After Update feeds)
-#
 
-# Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
-
+git clone https://github.com/pymumu/openwrt-smartdns -b master package/custom/smartdns
+git clone https://github.com/pymumu/luci-app-smartdns -b master package/custom/luci-app-smartdns
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall -b main package/custom/openwrt-passwall
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages -b main package/custom/passwall-packages
+git clone https://github.com/tty228/luci-app-wechatpush -b master package/custom/luci-app-wechatpush
+git clone https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 cp -rf package/custom/openwrt-passwall/luci-app-passwall package/custom/
-rm -rf package/custom/passwall-packages/.git*
 cp -rf package/custom/passwall-packages/* package/custom/
 rm -rf package/custom/openwrt-passwall
 rm -rf package/custom/passwall-packages
@@ -29,13 +23,9 @@ do
     fi
 done
 
-sed -i 's/\.\.\/\.\.\/lang\/rust\/rust-package.mk/$(TOPDIR)\/feeds\/packages\/lang\/rust\/rust-package.mk/g' package/custom/smartdns/Makefile
 sed -i 's/DISTRIB_REVISION=.*/DISTRIB_REVISION="R'$(date "+%y.%m.%d")'"/g' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/By Lienol/(default)/g' package/custom/luci-theme-bootstrap-mod/Makefile
 sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' feeds/packages/net/openssh/Makefile
-sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci/Makefile
-sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci-nginx/Makefile
-sed -i 's/luci-theme-bootstrap /luci-theme-bootstrap-mod /g' feeds/luci/collections/luci-ssl-nginx/Makefile
 sed -i 's/;Listen = 0.0.0.0:1688/Listen = 0.0.0.0:1688/g' feeds/packages/net/vlmcsd/files/vlmcsd.ini
 
 GEOIP_VER=$(echo -n `curl -sL -H "${AUTH}" https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq -r .tag_name`)
@@ -56,6 +46,4 @@ SMARTDNS_SHA=$(echo -n `echo ${SMARTDNS_JSON} | jq .sha | sed 's/\"//g'`)
 sed -i '/PKG_MIRROR_HASH:=/d' package/custom/smartdns/Makefile
 sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='"${SMARTDNS_VER}"'/g' package/custom/smartdns/Makefile
 sed -i 's/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:='"${SMARTDNS_SHA}"'/g' package/custom/smartdns/Makefile
-sed -i 's/..\/..\/lang\/rust\/rust-package.mk/$(TOPDIR)\/feeds\/packages\/lang\/rust\/rust-package.mk/g' package/custom/smartdns/Makefile
 sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='"${SMARTDNS_VER}"'/g' package/custom/luci-app-smartdns/Makefile
-sed -i 's/..\/..\/luci.mk/$(TOPDIR)\/feeds\/luci\/luci.mk/g' package/custom/luci-app-smartdns/Makefile

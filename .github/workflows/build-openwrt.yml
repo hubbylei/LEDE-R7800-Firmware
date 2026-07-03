@@ -1,4 +1,4 @@
-name: Build OpenWrt QCA
+name: Build LEDE QCA
 
 on:
   workflow_dispatch:
@@ -11,8 +11,7 @@ env:
   REPO_HASH: b23965cfb7fa0f0d743ee2c64afac13091335dc2
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: r7800.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  DIY_SH: diy.sh
   AUTH: ${{ secrets.AUTH }}
   TZ: Asia/Shanghai
 
@@ -49,20 +48,12 @@ jobs:
         cd ${GITHUB_WORKSPACE}/openwrt
         ./scripts/feeds update -a
 
-    - name: Load custom feeds
-      run: |
-        cp -vf ${GITHUB_WORKSPACE}/$DIY_P1_SH ${GITHUB_WORKSPACE}/openwrt/
-        cd ${GITHUB_WORKSPACE}/openwrt
-        chmod +x $DIY_P1_SH
-        ./$DIY_P1_SH
-
-
     - name: Load custom configuration
       run: |
+        cp -vf ${GITHUB_WORKSPACE}/$DIY_SH ${GITHUB_WORKSPACE}/openwrt/
         cd ${GITHUB_WORKSPACE}/openwrt
-        cp -vf ${GITHUB_WORKSPACE}/$DIY_P2_SH ${GITHUB_WORKSPACE}/openwrt/
-        chmod +x $DIY_P2_SH
-        ./$DIY_P2_SH
+        chmod +x $DIY_SH
+        ./$DIY_SH
 
     - name: Install feeds
       run: |
@@ -76,7 +67,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}/openwrt
         cp -vf ${GITHUB_WORKSPACE}/$CONFIG_FILE ${GITHUB_WORKSPACE}/openwrt/.config
         make defconfig
-        make download -j$(nproc) V=s
+        make download -j$(nproc)
 
     - name: Compile the firmware
       id: compile
