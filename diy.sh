@@ -40,6 +40,7 @@ done
 
 sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION='R"$(date "+%y.%m.%d")"'/g" ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
 sed -i "s/DISTRIB_DESCRIPTION='.*'/DISTRIB_DESCRIPTION='LEDE '/g" ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
+sed -i '/OPENWRT_RELEASE/d' ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
 sed -i "/DISTRIB_DESCRIPTION=.*/a\sed -i '/OPENWRT_RELEASE/d' \/usr\/lib\/os-release\necho 'OPENWRT_RELEASE=\"LEDE R"$(date "+%y.%m.%d")"\"' >> \/usr\/lib\/os-release" ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
 sed -i 's/By Lienol/(default)/g' ${BaseDir}/package/custom/luci-theme-bootstrap-mod/Makefile
 sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' ${BaseDir}/feeds/packages/net/openssh/Makefile
