@@ -9,7 +9,7 @@ git clone --depth=1 https://github.com/brvphoenix/wrtbwmon -b master package/cus
 git clone --depth=1 https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
 git clone --depth=1 https://github.com/hubbylei/libxcrypt -b main package/custom/libxcrypt
 git clone --depth=1 https://github.com/coolsnowwolf/lede -b master  package/custom/lede
-git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go -b main package/custom/app-ddns-go
+git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go -b lua package/custom/app-ddns-go
 rm -rf feeds/packages/lang/golang
 git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 cp -rf package/custom/openwrt-passwall/luci-app-passwall package/custom/
@@ -28,11 +28,13 @@ rm -rf package/custom/app-ddns-go
 del_data=$(ls package/custom)
 for data in ${del_data}
 do
-    isdel=$(find feeds -iname "${data}")
-    if [ -f ${isdel}/Makefile ];then
-        rm -rf ${isdel}
-        echo "Deleted ${isdel}"
-    fi
+	for isdel in $(find feeds -iname "${data}")
+	do
+	if [ -f ${isdel}/Makefile ];then
+		rm -rf ${isdel}
+		echo "Deleted ${isdel}"
+	fi
+	done
 done
 
 sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION='R"$(date "+%y.%m.%d")"'/g" package/lean/default-settings/files/zzz-default-settings
