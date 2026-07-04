@@ -28,7 +28,7 @@ rm -rf package/custom/app-ddns-go
 del_data=$(ls package/custom)
 for data in ${del_data}
 do
-    isdel=$(find feeds -name "${data}")
+    isdel=$(find feeds -iname "${data}")
     if [ -f ${isdel}/Makefile ];then
         rm -rf ${isdel}
         echo "Deleted ${isdel}"
