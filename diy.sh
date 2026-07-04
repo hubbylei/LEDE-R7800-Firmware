@@ -1,27 +1,35 @@
 #!/bin/bash
 
-git clone https://github.com/pymumu/openwrt-smartdns -b master package/custom/smartdns
-git clone https://github.com/pymumu/luci-app-smartdns -b master package/custom/luci-app-smartdns
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall -b main package/custom/openwrt-passwall
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages -b main package/custom/passwall-packages
-git clone https://github.com/tty228/luci-app-wechatpush -b master package/custom/luci-app-wechatpush
-git clone https://github.com/brvphoenix/wrtbwmon -b master package/custom/bwmon
-git clone https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
-git clone https://github.com/hubbylei/libxcrypt -b main package/custom/libxcrypt
+git clone --depth=1 https://github.com/pymumu/openwrt-smartdns -b master package/custom/smartdns
+git clone --depth=1 https://github.com/pymumu/luci-app-smartdns -b master package/custom/luci-app-smartdns
+git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall -b main package/custom/openwrt-passwall
+git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages -b main package/custom/passwall-packages
+git clone --depth=1 https://github.com/tty228/luci-app-wechatpush -b master package/custom/luci-app-wechatpush
+git clone --depth=1 https://github.com/brvphoenix/wrtbwmon -b master package/custom/bwmon
+git clone --depth=1 https://github.com/hubbylei/luci-theme-bootstrap-mod package/custom/luci-theme-bootstrap-mod
+git clone --depth=1 https://github.com/hubbylei/libxcrypt -b main package/custom/libxcrypt
+git clone --depth=1 https://github.com/coolsnowwolf/lede -b master  package/custom/lede
+git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go -b main package/custom/app-ddns-go
 rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 cp -rf package/custom/openwrt-passwall/luci-app-passwall package/custom/
 rm -rf package/custom/openwrt-passwall
 cp -rf package/custom/passwall-packages/* package/custom/
 rm -rf package/custom/passwall-packages
 cp -rf package/custom/bwmon/wrtbwmon package/custom/
 rm -rf package/custom/bwmon
+cp -rf package/custom/lede/package/network/services/dnsmasq package/custom/
+rm -rf package/custom/lede
+rm -rf package/network/services/dnsmasq
+cp -rf package/custom/app-ddns-go/luci-app-ddns-go package/custom/
+cp -rf package/custom/app-ddns-go/ddns-go package/custom/
+rm -rf package/custom/app-ddns-go
 
 del_data=$(ls package/custom)
 for data in ${del_data}
 do
     isdel=$(find feeds -name "${data}")
-    if [[ -n ${isdel} && -f ${isdel}/Makefile ]];then
+    if [ -f ${isdel}/Makefile ];then
         rm -rf ${isdel}
         echo "Deleted ${isdel}"
     fi
@@ -53,3 +61,11 @@ sed -i '/PKG_MIRROR_HASH:=/d' package/custom/smartdns/Makefile
 sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='"${SMARTDNS_VER}"'/g' package/custom/smartdns/Makefile
 sed -i 's/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:='"${SMARTDNS_SHA}"'/g' package/custom/smartdns/Makefile
 sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='"${SMARTDNS_VER}"'/g' package/custom/luci-app-smartdns/Makefile
+
+FRP_VER=$(curl -sL --retry 5 -H "${AUTH}" https://api.github.com/repos/fatedier/frp/releases/latest | jq -r .name | sed 's/v//g')
+curl -sL -H "${AUTH}" --retry 5 -o /tmp/frp-${FRP_VER}.tar.gz https://codeload.github.com/fatedier/frp/tar.gz/v${FRP_VER}?
+FRP_PKG_HASH=$(sha256sum /tmp/frp-${FRP_VER}.tar.gz | awk '{print $1}')
+rm -rf /tmp/frp-${FRP_VER}.tar.gz
+curl -skL -o feeds/packages/net/frp/Makefile https://github.com/openwrt/packages/raw/refs/heads/master/net/frp/Makefile
+sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='${FRP_VER}'/g' feeds/packages/net/frp/Makefile
+sed -i 's/PKG_HASH:=.*/PKG_HASH:='${FRP_PKG_HASH}'/g' feeds/packages/net/frp/Makefile
