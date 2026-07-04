@@ -30,10 +30,10 @@ for data in ${del_data}
 do
 	for isdel in $(find feeds -iname "${data}")
 	do
-	if [ -f ${isdel}/Makefile ];then
-		rm -rf ${isdel}
-		echo "Deleted ${isdel}"
-	fi
+		if [ -f ${isdel}/Makefile ];then
+			rm -rf ${isdel}
+			echo "Deleted ${isdel}"
+		fi
 	done
 done
 
