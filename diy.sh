@@ -20,6 +20,7 @@ rm -rf ${BaseDir}/package/custom/passwall-packages
 cp -rf ${BaseDir}/package/custom/bwmon/wrtbwmon ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/bwmon
 cp -rf ${BaseDir}/package/custom/lede/package/network/services/dnsmasq ${BaseDir}/package/custom/
+cp -rf ${BaseDir}/package/custom/lede/package/lean/cpufreq ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/lede
 rm -rf ${BaseDir}/package/network/services/dnsmasq
 cp -rf ${BaseDir}/package/custom/app-ddns-go/luci-app-ddns-go ${BaseDir}/package/custom/
