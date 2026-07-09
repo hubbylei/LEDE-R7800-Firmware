@@ -1,31 +1,47 @@
 #!/bin/bash
 
 BaseDir=$(pwd)
+git clone --depth=1 https://github.com/arenekosreal/luci-app-nginx -b master ${BaseDir}/package/custom/luci-app-nginx
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns -b master ${BaseDir}/package/custom/smartdns
 git clone --depth=1 https://github.com/pymumu/luci-app-smartdns -b master ${BaseDir}/package/custom/luci-app-smartdns
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall -b main ${BaseDir}/package/custom/openwrt-passwall
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages -b main ${BaseDir}/package/custom/passwall-packages
 git clone --depth=1 https://github.com/tty228/luci-app-wechatpush -b master ${BaseDir}/package/custom/luci-app-wechatpush
 git clone --depth=1 https://github.com/brvphoenix/wrtbwmon -b master ${BaseDir}/package/custom/bwmon
-git clone --depth=1 https://github.com/hubbylei/luci-theme-bootstrap-mod ${BaseDir}/package/custom/luci-theme-bootstrap-mod
 git clone --depth=1 https://github.com/hubbylei/libxcrypt -b main ${BaseDir}/package/custom/libxcrypt
 git clone --depth=1 https://github.com/coolsnowwolf/lede -b master  ${BaseDir}/package/custom/lede
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go -b lua ${BaseDir}/package/custom/app-ddns-go
-rm -rf feeds/packages/lang/golang
-git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+git clone --depth=1 https://github.com/immortalwrt/packages -b master ${BaseDir}/package/custom/imm_package
+rm -rf ${BaseDir}/feeds/packages/lang/golang
+git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 26.x ${BaseDir}/feeds/packages/lang/golang
+
 cp -rf ${BaseDir}/package/custom/openwrt-passwall/luci-app-passwall ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/openwrt-passwall
 cp -rf ${BaseDir}/package/custom/passwall-packages/* ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/passwall-packages
 cp -rf ${BaseDir}/package/custom/bwmon/wrtbwmon ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/bwmon
-cp -rf ${BaseDir}/package/custom/lede/package/network/services/dnsmasq ${BaseDir}/package/custom/
-cp -rf ${BaseDir}/package/custom/lede/package/lean/cpufreq ${BaseDir}/package/custom/
-rm -rf ${BaseDir}/package/custom/lede
-rm -rf ${BaseDir}/package/network/services/dnsmasq
 cp -rf ${BaseDir}/package/custom/app-ddns-go/luci-app-ddns-go ${BaseDir}/package/custom/
 cp -rf ${BaseDir}/package/custom/app-ddns-go/ddns-go ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/app-ddns-go
+
+rm -rf ${BaseDir}/package/network/services/dnsmasq
+rm -rf ${BaseDir}/package/utils/ucode
+rm -rf ${BaseDir}/package/libs/openssl
+rm -rf ${BaseDir}/tools/cmake
+rm -rf ${BaseDir}/tools/automake
+cp -rf ${BaseDir}/package/custom/lede/package/network/services/dnsmasq ${BaseDir}/package/network/services/
+cp -rf ${BaseDir}/package/custom/lede/package/lean/cpufreq ${BaseDir}/package/custom/
+cp -rf ${BaseDir}/package/custom/lede/package/qca/shortcut-fe/* ${BaseDir}/package/custom/
+cp -rf ${BaseDir}/package/custom/lede/package/utils/ucode ${BaseDir}/package/utils/
+cp -rf ${BaseDir}/package/custom/lede/package/libs/openssl ${BaseDir}/package/libs/
+cp -rf ${BaseDir}/package/custom/lede/tools/cmake ${BaseDir}/tools/
+cp -rf ${BaseDir}/package/custom/lede/tools/automake ${BaseDir}/tools/
+rm -rf ${BaseDir}/package/custom/lede
+
+cp -rf ${BaseDir}/package/custom/imm_package/net/nginx ${BaseDir}/package/custom/
+cp -rf ${BaseDir}/package/custom/imm_package/lang/lua/luajit2 ${BaseDir}/package/custom/
+rm -rf ${BaseDir}/package/custom/imm_package
 
 del_data=$(ls ${BaseDir}/package/custom)
 for data in ${del_data}
@@ -43,8 +59,9 @@ sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION='R"$(date "+%y.%m.%d")"'/g" ${B
 sed -i "s/DISTRIB_DESCRIPTION='.*'/DISTRIB_DESCRIPTION='LEDE '/g" ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
 sed -i '/OPENWRT_RELEASE/d' ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
 sed -i "/DISTRIB_DESCRIPTION=.*/a\sed -i '/OPENWRT_RELEASE/d' \/usr\/lib\/os-release\necho 'OPENWRT_RELEASE=\"LEDE R"$(date "+%y.%m.%d")"\"' >> \/usr\/lib\/os-release" ${BaseDir}/package/lean/default-settings/files/zzz-default-settings
-sed -i 's/By Lienol/(default)/g' ${BaseDir}/package/custom/luci-theme-bootstrap-mod/Makefile
+
 sed -i '/sed -r -i/a\\tsed -i "s,#Port 22,Port 22,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#ListenAddress 0.0.0.0,ListenAddress 0.0.0.0,g" $(1)\/etc\/ssh\/sshd_config\n\tsed -i "s,#PermitRootLogin prohibit-password,PermitRootLogin yes,g" $(1)\/etc\/ssh\/sshd_config' ${BaseDir}/feeds/packages/net/openssh/Makefile
+
 sed -i 's/;Listen = 0.0.0.0:1688/Listen = 0.0.0.0:1688/g' ${BaseDir}/feeds/packages/net/vlmcsd/files/vlmcsd.ini
 
 GEOIP_VER=$(echo -n `curl -sL -H "${AUTH}" https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq -r .tag_name`)
@@ -71,9 +88,9 @@ FRP_VER=$(curl -sL --retry 5 -H "${AUTH}" https://api.github.com/repos/fatedier/
 curl -sL -H "${AUTH}" --retry 5 -o /tmp/frp-${FRP_VER}.tar.gz https://codeload.github.com/fatedier/frp/tar.gz/v${FRP_VER}?
 FRP_PKG_HASH=$(sha256sum /tmp/frp-${FRP_VER}.tar.gz | awk '{print $1}')
 rm -rf /tmp/frp-${FRP_VER}.tar.gz
-curl -skL -o feeds/packages/net/frp/Makefile https://github.com/openwrt/packages/raw/refs/heads/master/net/frp/Makefile
-sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='${FRP_VER}'/g' feeds/packages/net/frp/Makefile
-sed -i 's/PKG_HASH:=.*/PKG_HASH:='${FRP_PKG_HASH}'/g' feeds/packages/net/frp/Makefile
+curl -skL -H "${AUTH}" -o ${BaseDir}/feeds/packages/net/frp/Makefile https://github.com/openwrt/packages/raw/refs/heads/master/net/frp/Makefile
+sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='${FRP_VER}'/g' ${BaseDir}/feeds/packages/net/frp/Makefile
+sed -i 's/PKG_HASH:=.*/PKG_HASH:='${FRP_PKG_HASH}'/g' ${BaseDir}/feeds/packages/net/frp/Makefile
 
 DDNS_GO_VER=$(curl -sL --retry 5 -H "${AUTH}" https://api.github.com/repos/jeessy2/ddns-go/releases/latest | jq -r .name | sed 's/v//g')
 if [ -d /tmp/DDNS-GO-${DDNS_GO_VER} ];then
