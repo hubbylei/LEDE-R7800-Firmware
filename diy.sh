@@ -76,13 +76,23 @@ sed -i 's/GEOSITE_VER:=.*/GEOSITE_VER:='"$GEOSITE_VER"'/g' ${BaseDir}/package/cu
 sed -i '/FILE:=$(GEOSITE_FILE)/a\ HASH:='"$GEOSITE_HASH"'' ${BaseDir}/package/custom/v2ray-geodata/Makefile
 sed -i 's/URL:=https:\/\/www.v2fly.org/URL:=https:\/\/github.com\/Loyalsoldier\/v2ray-rules-dat/g' ${BaseDir}/package/custom/v2ray-geodata/Makefile
 
-SMARTDNS_JSON=$(curl -sL -H "${AUTH}" https://api.github.com/repos/pymumu/smartdns/commits | jq .[0])
-SMARTDNS_VER=$(echo -n `echo ${SMARTDNS_JSON} | jq .commit.committer.date | awk -F "T" '{print $1}' | sed 's/\"//g' | sed 's/\-/\./g'`)
-SMARTDNS_SHA=$(echo -n `echo ${SMARTDNS_JSON} | jq .sha | sed 's/\"//g'`)
-sed -i '/PKG_MIRROR_HASH:=/d' ${BaseDir}/package/custom/smartdns/Makefile
-sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='"${SMARTDNS_VER}"'/g' ${BaseDir}/package/custom/smartdns/Makefile
-sed -i 's/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:='"${SMARTDNS_SHA}"'/g' ${BaseDir}/package/custom/smartdns/Makefile
-sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='"${SMARTDNS_VER}"'/g' ${BaseDir}/package/custom/luci-app-smartdns/Makefile
+SMARTDNS_JSON=$(curl -sL -H "${AUTH}" https://api.github.com/repos/pymumu/smartdns/releases/latest)
+SMARTDNS_TAGS=$(curl -sL -H "${AUTH}" https://api.github.com/repos/pymumu/smartdns/tags)
+SMARTDNS_TARGET=$(echo ${SMARTDNS_JSON} | jq -r .tag_name)
+SMARTDNS_VERSION=$(echo ${SMARTDNS_TARGET} | sed 's/Release\(.*\)/\1/')
+TAGS_LEN=$(echo ${SMARTDNS_TAGS} | jq '.|length')
+for ((i=0;i<${TAGS_LEN};i++));do
+	tag_name=$(echo ${SMARTDNS_TAGS} | jq -r .[${i}].name)
+	if [ "${tag_name}" = "${SMARTDNS_TARGET}" ];then
+		SMARTDNS_PKG_HASH=$(echo ${SMARTDNS_TAGS} | jq -r .[${i}].commit.sha)
+		break
+	fi
+done
+rm -rf /tmp/smartdns-${SMARTDNS_TARGET}.tar.gz
+sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='${SMARTDNS_VERSION}'/g' ${BaseDir}/package/custom/smartdns/Makefile
+sed -i '/PKG_MIRROR_HASH:=.*/d' ${BaseDir}/package/custom/smartdns/Makefile
+sed -i 's/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:='${SMARTDNS_PKG_HASH}'/g' ${BaseDir}/package/custom/smartdns/Makefile
+sed -i 's/PKG_VERSION:=.*/PKG_VERSION:='${SMARTDNS_VERSION}'/g' ${BaseDir}/package/custom/luci-app-smartdns/Makefile
 
 FRP_VER=$(curl -sL --retry 5 -H "${AUTH}" https://api.github.com/repos/fatedier/frp/releases/latest | jq -r .name | sed 's/v//g')
 curl -sL -H "${AUTH}" --retry 5 -o /tmp/frp-${FRP_VER}.tar.gz https://codeload.github.com/fatedier/frp/tar.gz/v${FRP_VER}?
