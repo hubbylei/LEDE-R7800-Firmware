@@ -40,6 +40,8 @@ cp -rf ${BaseDir}/package/custom/lede/tools/automake ${BaseDir}/tools/
 rm -rf ${BaseDir}/package/custom/lede
 
 cp -rf ${BaseDir}/package/custom/imm_package/net/nginx ${BaseDir}/package/custom/
+cp -rf ${BaseDir}/package/custom/imm_package/net/nginx-util ${BaseDir}/package/custom/
+cp -rf ${BaseDir}/package/custom/imm_package/lang/lua/luajit ${BaseDir}/package/custom/
 cp -rf ${BaseDir}/package/custom/imm_package/lang/lua/luajit2 ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/imm_package
 
