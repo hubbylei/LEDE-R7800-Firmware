@@ -13,7 +13,7 @@ git clone --depth=1 https://github.com/coolsnowwolf/lede -b master  ${BaseDir}/p
 git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go -b lua ${BaseDir}/package/custom/app-ddns-go
 git clone --depth=1 https://github.com/immortalwrt/packages -b master ${BaseDir}/package/custom/imm_package
 rm -rf ${BaseDir}/feeds/packages/lang/golang
-git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 26.x ${BaseDir}/feeds/packages/lang/golang
+git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 27.x ${BaseDir}/feeds/packages/lang/golang
 
 cp -rf ${BaseDir}/package/custom/openwrt-passwall/luci-app-passwall ${BaseDir}/package/custom/
 rm -rf ${BaseDir}/package/custom/openwrt-passwall
